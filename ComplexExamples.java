@@ -100,6 +100,7 @@ public class ComplexExamples {
         System.out.println("Duplicate filtered, grouped by name, sorted by name and id:");
 
         Map<String, Long> sortedNames = Arrays.stream(RAW_DATA)
+                .filter(name -> Objects.nonNull(name))
                 .distinct()
                 .sorted(Comparator.comparingInt(Person::getId))
                 .collect(groupingBy(Person::getName, counting()));
@@ -139,6 +140,7 @@ public class ComplexExamples {
         int sum = 10;
 
         List<List<Integer>> pairOfNumbers = Arrays.asList(numbers).stream()
+                .filter(num -> Objects.nonNull(num))
                 .flatMap(a -> Arrays.asList(numbers).stream().
                         flatMap(b -> a + b == sum ? Stream.of(Arrays.asList(a, b)) : Stream.empty()))
                 .limit(1)
@@ -185,4 +187,5 @@ public class ComplexExamples {
             return false;
         }
     }
+    
 }
