@@ -171,21 +171,37 @@ public class ComplexExamples {
         System.out.println("\nlw in cartwheel:\n" + fuzzySearch("lw", "cartwheel"));
 
 
-
     }
+
+    
+//    private static boolean fuzzySearch(String str, String text) {
+//
+//        if (str.length()==0 && text.length()>=0) return true;
+//
+//        if (text.length() == 0 && str.length() > 0) return false;
+//
+//        else {
+//            if (text.contains(str.substring(0,1))){
+//                return fuzzySearch(str.substring(1, str.length()), text.substring(text.indexOf(str.substring(0,1))+1, text.length()));
+//            }
+//            return false;
+//        }
+//    }
 
     private static boolean fuzzySearch(String str, String text) {
-
-        if (str.length()==0 && text.length()>=0) return true;
-
-        if (text.length() == 0 && str.length() > 0) return false;
-
-        else {
-            if (text.contains(str.substring(0,1))){
-                return fuzzySearch(str.substring(1, str.length()), text.substring(text.indexOf(str.substring(0,1))+1, text.length()));
+        if (text.length() < str.length()) return false;
+        if (text.length() == str.length() && text.equals(str)) return true;
+        int lastIndex = 0;
+        int count = 0;
+        for (int i = 0; i < str.length(); i++) {
+            for (int j=lastIndex; j<text.length(); j++){
+                if (str.charAt(i)==text.charAt(j)){
+                    count++;
+                    lastIndex = j+1;
+                    break;
+                }
             }
-            return false;
         }
+        return (count==str.length());
     }
-    
 }
