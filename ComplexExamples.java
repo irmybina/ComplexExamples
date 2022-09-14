@@ -100,7 +100,6 @@ public class ComplexExamples {
         System.out.println("Duplicate filtered, grouped by name, sorted by name and id:");
 
         Map<String, Long> sortedNames = Arrays.stream(RAW_DATA)
-                .filter(name -> Objects.nonNull(name))
                 .distinct()
                 .sorted(Comparator.comparingInt(Person::getId))
                 .collect(groupingBy(Person::getName, counting()));
@@ -140,7 +139,6 @@ public class ComplexExamples {
         int sum = 10;
 
         List<List<Integer>> pairOfNumbers = Arrays.asList(numbers).stream()
-                .filter(num -> Objects.nonNull(num))
                 .flatMap(a -> Arrays.asList(numbers).stream().
                         flatMap(b -> a + b == sum ? Stream.of(Arrays.asList(a, b)) : Stream.empty()))
                 .limit(1)
@@ -174,34 +172,19 @@ public class ComplexExamples {
     }
 
     
-//    private static boolean fuzzySearch(String str, String text) {
-//
-//        if (str.length()==0 && text.length()>=0) return true;
-//
-//        if (text.length() == 0 && str.length() > 0) return false;
-//
-//        else {
-//            if (text.contains(str.substring(0,1))){
-//                return fuzzySearch(str.substring(1, str.length()), text.substring(text.indexOf(str.substring(0,1))+1, text.length()));
-//            }
-//            return false;
-//        }
-//    }
-
     private static boolean fuzzySearch(String str, String text) {
-        if (text.length() < str.length()) return false;
-        if (text.length() == str.length() && text.equals(str)) return true;
-        int lastIndex = 0;
-        int count = 0;
-        for (int i = 0; i < str.length(); i++) {
-            for (int j=lastIndex; j<text.length(); j++){
-                if (str.charAt(i)==text.charAt(j)){
-                    count++;
-                    lastIndex = j+1;
-                    break;
-                }
+
+        if (str.length()==0 && text.length()>=0) return true;
+
+        if (text.length() == 0 && str.length() > 0) return false;
+
+        else {
+            if (text.contains(str.substring(0,1))){
+                return fuzzySearch(str.substring(1, str.length()), text.substring(text.indexOf(str.substring(0,1))+1, text.length()));
             }
+            return false;
         }
-        return (count==str.length());
     }
+
+  
 }
